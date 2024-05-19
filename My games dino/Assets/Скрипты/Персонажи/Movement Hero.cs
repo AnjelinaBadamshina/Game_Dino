@@ -1,0 +1,98 @@
+using UnityEngine;
+
+public class MovementHero : MonoBehaviour
+{
+    private Rigidbody2D rb;
+    private bool FacingRight = true; // Переменная для отслеживания направления персонажа
+
+    [Header("Настройки перемещения игрока")]
+    [Range(0, 10f)] public float speed = 1f; // Скорость перемещения персонажа
+    [Range(0, 15f)] public float jumpForce = 8f; // Сила прыжка персонажа
+
+    [Header("Настройки анимации игрока")]
+    [SerializeField] private Animator animator; // Ссылка на компонент аниматора персонажа
+
+    [Space]
+    [Header("Настройки заземления игрока")]
+    public bool isGrounded = false; // Переменная для определения, находится ли персонаж на земле
+    public float checkGroundOffsetY = -0.7f; // Смещение точки проверки заземления по оси Y
+    public float checkGroundRadius = 0.3f; // Радиус проверки заземления
+
+   
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>(); // Получаем доступ к Rigidbody2D компоненту персонажа
+    }
+
+    void Update()
+    {
+        float moveInput = 0f; // Инициализируем переменную для ввода перемещения
+
+        // Проверяем, какой игрок управляет персонажем и получаем ввод перемещения
+        if (gameObject.CompareTag("Player1"))
+        {
+            moveInput = Input.GetAxisRaw("Horizontal"); // Получаем ввод перемещения для первого игрока
+            if (Input.GetKeyDown(KeyCode.W) && isGrounded) // Проверяем, была ли нажата кнопка прыжка и находится ли персонаж на земле
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce); // Применяем силу прыжка к персонажу
+                
+            }
+        }
+        else if (gameObject.CompareTag("Player2"))
+        {
+            moveInput = Input.GetAxisRaw("Horizontal2"); // Получаем ввод перемещения для второго игрока
+            if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded) // Проверяем, была ли нажата кнопка прыжка и находится ли персонаж на земле
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce); // Применяем силу прыжка к персонажу
+                
+            }
+        }
+
+        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y); // Применяем ввод перемещения к скорости персонажа
+
+        animator.SetFloat("HorizontalMove", Mathf.Abs(moveInput)); // Устанавливаем параметр анимации для перемещения
+
+        // Проверяем направление перемещения и поворачиваем персонажа соответственно
+        if (moveInput > 0 && !FacingRight)
+        {
+            Flip(); // Поворачиваем персонажа вправо
+        }
+        else if (moveInput < 0 && FacingRight)
+        {
+            Flip(); // Поворачиваем персонажа влево
+        }
+    }
+
+    // Метод для поворота персонажа
+    private void Flip()
+    {
+        FacingRight = !FacingRight; // Меняем направление персонажа
+        Vector3 theScale = transform.localScale; // Получаем масштаб персонажа
+        theScale.x *= -1; // Инвертируем масштаб по оси X
+        transform.localScale = theScale; // Применяем измененный масштаб
+    }
+
+    // Метод, вызываемый на каждом кадре физики для проверки заземления
+    private void FixedUpdate()
+    {
+        CheckGround(); // Вызываем метод проверки заземления
+    }
+
+    // Метод для проверки заземления
+    private void CheckGround()
+    {
+        // Проверяем, есть ли коллайдеры в указанной области
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + checkGroundOffsetY), checkGroundRadius);
+
+        // Если количество коллайдеров больше 1, то персонаж находится на земле
+        if (colliders.Length > 1)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false; // Иначе персонаж в воздухе
+        }
+    }
+}
