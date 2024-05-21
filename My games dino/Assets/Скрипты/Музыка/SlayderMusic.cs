@@ -5,7 +5,7 @@ public class VolumeSlider : MonoBehaviour
 {
     public Slider volumeSlider; // Ссылка на слайдер для регулировки громкости
 
-    void Start()
+    void Awake()
     {
         // Получаем единственный экземпляр MusicController
         MusicController musicController = MusicController.instance;

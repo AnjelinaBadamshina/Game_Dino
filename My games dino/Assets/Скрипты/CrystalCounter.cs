@@ -13,7 +13,6 @@ public class CrystalCounter : MonoBehaviour
         if (crystal <= 3)
         {
             crystal = crystal+1;                      // Увеличиваем счетчик кристаллов
-            Debug.Log(crystal);
         }
 
         crystalText.text = crystal.ToString();   // Обновляем текстовое поле, отображающее количество кристаллов

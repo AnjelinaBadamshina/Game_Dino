@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 5892755739656559067}
   - component: {fileID: 8829173705664392189}
   - component: {fileID: 4126484830146523045}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u041A\u0440\u0430\u0441\u043D\u044B\u0439 \u0434\u0438\u043D\u043E\u0437\u0430\u0432\u0440"
-  m_TagString: Player2
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,7 +136,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &7753649636222170508
 BoxCollider2D:
@@ -170,7 +170,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.20024014, y: -0.29426235}
+  m_Offset: {x: -0.11455917, y: -0.29426235}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -181,7 +181,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7663555, y: 0.7048522}
+  m_Size: {x: 0.61595154, y: 0.7048522}
   m_EdgeRadius: 0
 --- !u!114 &5892755739656559067
 MonoBehaviour:
@@ -199,8 +199,8 @@ MonoBehaviour:
   jumpForce: 8
   animator: {fileID: 4221737113261894246}
   isGrounded: 1
-  checkGroundOffsetY: -0.59
-  checkGroundRadius: 0.3
+  checkGroundOffsetY: -0.49
+  checkGroundRadius: 0.4
 --- !u!61 &8829173705664392189
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -233,7 +233,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.002568245, y: 0.3356579}
+  m_Offset: {x: 0.08301163, y: 0.3356579}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -244,7 +244,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1719265, y: 0.5664104}
+  m_Size: {x: 1.0110397, y: 0.5664104}
   m_EdgeRadius: 0
 --- !u!114 &4126484830146523045
 MonoBehaviour:

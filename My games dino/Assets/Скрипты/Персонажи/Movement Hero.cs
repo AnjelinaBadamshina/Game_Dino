@@ -85,6 +85,16 @@ public class MovementHero : MonoBehaviour
         // Проверяем, есть ли коллайдеры в указанной области
         Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + checkGroundOffsetY), checkGroundRadius);
 
+        if (Physics2D.OverlapPointAll(new Vector2(transform.position.x, transform.position.y + checkGroundOffsetY), LayerMask.GetMask("Dinosaur")).Length == 1 // Проверяем, что на уровне ног только один динозавр (мы) - не будет срабатывать, когда двое просто проходят сквозь друг друга
+            && Physics2D.OverlapPointAll(new Vector2(transform.position.x, transform.position.y + checkGroundOffsetY - 0.2f), LayerMask.GetMask("Dinosaur")).Length > 0) // Проверяем, что ниже динозавра есть еще динозавр - мы стоим сверху.
+        {
+            rb.includeLayers = LayerMask.GetMask("Dinosaur"); // В RigidBody2D указываем, что игнорируя настройки физики, будем сталкиваться со слоем Dinosaur
+        }
+        else
+        {
+            rb.includeLayers = LayerMask.GetMask("Nothing"); // Убираем слой "Dinosaur" из исключений.
+        }
+
         // Если количество коллайдеров больше 1, то персонаж находится на земле
         if (colliders.Length > 1)
         {
@@ -94,5 +104,13 @@ public class MovementHero : MonoBehaviour
         {
             isGrounded = false; // Иначе персонаж в воздухе
         }
+    }
+
+    // Отрисовка для метода CheckGround()
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.up * checkGroundOffsetY);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * checkGroundOffsetY, checkGroundRadius);
     }
 }

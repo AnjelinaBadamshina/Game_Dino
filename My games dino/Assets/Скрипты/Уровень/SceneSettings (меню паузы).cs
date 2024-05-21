@@ -1,11 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneSettings : MonoBehaviour
 {
     public GameObject PausePanel;
+
+    private void Start()
+    {
+        PausePanel.SetActive(false);
+    }
 
     // Обновление вызывается один раз за кадр
     void Update()
