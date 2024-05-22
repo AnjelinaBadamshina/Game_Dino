@@ -197,6 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   jumpForce: 8
+  flipShift: 0.4
   animator: {fileID: 4221737113261894246}
   isGrounded: 1
   checkGroundOffsetY: -0.49

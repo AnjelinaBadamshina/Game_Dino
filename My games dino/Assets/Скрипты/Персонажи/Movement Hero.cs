@@ -8,6 +8,7 @@ public class MovementHero : MonoBehaviour
     [Header("Настройки перемещения игрока")]
     [Range(0, 10f)] public float speed = 1f; // Скорость перемещения персонажа
     [Range(0, 15f)] public float jumpForce = 8f; // Сила прыжка персонажа
+    public float flipShift;
 
     [Header("Настройки анимации игрока")]
     [SerializeField] private Animator animator; // Ссылка на компонент аниматора персонажа
@@ -70,6 +71,13 @@ public class MovementHero : MonoBehaviour
         FacingRight = !FacingRight; // Меняем направление персонажа
         Vector3 theScale = transform.localScale; // Получаем масштаб персонажа
         theScale.x *= -1; // Инвертируем масштаб по оси X
+
+        // Двигаем персонажа в сторону поворота, так как коллайдеры ассиметричные
+        if (FacingRight)
+            transform.position += flipShift * Vector3.right;
+        else
+            transform.position += flipShift * Vector3.left;
+
         transform.localScale = theScale; // Применяем измененный масштаб
     }
 

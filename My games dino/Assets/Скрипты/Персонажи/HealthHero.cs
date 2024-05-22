@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-[RequireComponent(typeof(Animator))]
 
+[RequireComponent(typeof(Animator))]
 public class HealthHero : MonoBehaviour
 {
     public static int maxHealth { get; private set; } = 3; // Максимальное здоровье каждого персонажа

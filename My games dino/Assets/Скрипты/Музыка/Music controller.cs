@@ -1,45 +1,66 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicController : MonoBehaviour
 {
-    public static MusicController instance; // Singleton
-    private AudioSource audioSrc;
+    private static AudioSource music; // Источник фоновой музыки
+    [SerializeField] private AudioSource[] sounds; // Источники звука
     private float musicVolume;
+    private float soundsVolume;
+
+    [SerializeField] private Slider musicSlider; // Ссылка на слайдер для регулировки громкости музыки
+    [SerializeField] private Slider soundsSlider; // Ссылка на слайдер для регулировки громкости звуков
 
     private void Awake()
     {
-        if (instance == null)
+        // Проверяем, есть ли объект с музыкой
+        if (transform.childCount > 0)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // Сохранить объект между сценами
+            // Если объект еще не сохранен между сценами, сохраняем его
+            if (music == null)
+            {
+                music = transform.GetChild(0).GetComponent<AudioSource>();
+                music.transform.SetParent(null); // В DontDestroyOnLoad можно засунуть только объекты, у которых нет роддителей
+                DontDestroyOnLoad(music.gameObject); // Сохранить объект между сценами
+            }
+            else
+            {
+                // Если объект уже есть, то удаляем копию
+                Destroy(transform.GetChild(0).gameObject);
+            }
         }
-        else
-        {
-            Destroy(gameObject); // Уничтожить дубликат
-        }
+
+        // Установить громкость из сохраненных данных
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        soundsVolume = PlayerPrefs.GetFloat("SoundsVolume", 1f);
+
     }
 
     void Start()
     {
-        audioSrc = GetComponent<AudioSource>();
-        if (audioSrc == null) return;
+        // Установить громкость для всех AudioSource
+        foreach (var source in sounds)
+            source.volume = soundsVolume;
 
-        // Установить громкость из сохраненных данных
-        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        audioSrc.volume = musicVolume;
+        // Установить уровень слайдеров с проверкой на null
+        if (musicSlider != null)
+            musicSlider.value = musicVolume;
+        if (soundsSlider != null)
+            soundsSlider.value = soundsVolume;
     }
 
-    public void SetVolume(float volume)
+    public void SetMusicVolume(float volume)
     {
-        if (audioSrc == null) return;
-
         musicVolume = volume;
-        audioSrc.volume = musicVolume; // Установка громкости
+        music.volume = musicVolume; // Установка громкости
         PlayerPrefs.SetFloat("MusicVolume", musicVolume); // Сохранение громкости
     }
 
-    public float GetVolume()
+    public void SetSoundsVolume(float volume)
     {
-        return musicVolume; // Возвращает текущее значение громкости
+        soundsVolume = volume;
+        foreach (var source in sounds) // Установка громкости для всех звуков
+            source.volume = soundsVolume;
+        PlayerPrefs.SetFloat("SoundsVolume", soundsVolume); // Сохранение громкости
     }
 }
